@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/study.css">
+</head>
+<body>
+<div class="bgc">
+    <div class="header"></div>
+    <div class="middle">
+        <div class="middle-left">
+            <div class="middle-study">
+                <div class="btn">
+                    <button class="newcall" id="swiperid1">教育动态</button>
+                    <button class="policypoor" id="swiperid2">扶贫政策</button>
+                    <button class="edctrends" id="swiperid3">教育动态</button>
+                </div>
+                <!--轮播图开始-->
+                <div class="swiper">
+                    <div class="swiperson1" id="swiperson1">
+                        <div class="screen">
+                            <ul>
+                                <li><a href="#"><img src="images/1.jpg" width="473" height="245"/></a></li>
+                                <li><a href="#"><img src="images/2.jpg" width="473" height="245"/></a></li>
+                                <li><a href="#"><img src="images/3.jpg" width="473" height="245"/></a></li>
+                            </ul>
+                            <ol></ol>
+                        </div>
+                    </div>
+                    <div class="swiperson2" id="swiperson2">
+                        <div>
+                            <img src="images/2.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="swiperson3" id="swiperson3">
+                        <div>
+                            <img src="images/3.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="smallguy">
+                        <a href="#"><img src="images/peoplesmall.jpg" alt="" class="smallguylast"></a>
+                        <a href="#"><img src="images/peoplesmall.jpg" alt=""></a>
+                        <a href="#"><img src="images/peoplesmall.jpg" alt=""></a>
+                        <a href="#"><img src="images/peoplesmall.jpg" alt=""></a>
+                        <a href="#"><img src="images/peoplesmall.jpg" alt=""></a>
+                        <a href="#"><img src="images/peoplesmall.jpg" alt="" ></a>
+                    </div>
+                </div>
+                <!--轮播图结束-->
+            </div>
+        </div>
+        <div class="middle-center">
+
+        </div>
+        <div class="middle-right">
+            <div class="middle-poor">
+                <div class="middle-poorhead">
+
+                </div>
+                <div class="middle-poorbody">
+                    <div class="inside">
+
+                        <input type="text" class="number" value="请输入账号">
+
+
+                    </div>
+                    <div class="lock">
+                        <input type="password" class="secret" value="请输入密码">
+                        <!--<img src="images/lock.png" alt="">-->
+                    </div>
+
+                    <button>登&nbsp;录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+
+        <div class="foot">
+            Copyright&copy; 2017 Sogou.com.All Rights Reserved.青ICP证050897号 <br/>
+            青海城市云大数据技术有限公司提供技术支持
+        </div>
+
+
+    </div>
+</div>
+<script src="js/animate.js"></script>
+<script src="js/swiper.min.js"></script>
+<script>
+    var edc1 = document.getElementById("swiperid1");
+    var edc2 = document.getElementById("swiperid2");
+    var edc3 = document.getElementById("swiperid3");
+
+    edc1.onclick = function () {
+        swiperson1.style.display = "block";
+        swiperson2.style.display = "none";
+        swiperson3.style.display = "none";
+
+    }
+    edc2.onclick = function () {
+        swiperson1.style.display = "none";
+        swiperson2.style.display = "block";
+        swiperson3.style.display = "none";
+    }
+    edc3.onclick = function () {
+        swiperson3.style.display = "block";
+        swiperson2.style.display = "none";
+        swiperson1.style.display = "none";
+    }
+</script>
+<!--轮播图开始-->
+<script>
+    var swiperson1 = document.getElementById("swiperson1");
+    var screen = swiperson1.children[0];
+    var ul = screen.children[0];
+    var ulLis = ul.children;
+    var ol = screen.children[1];
+    var imgWidth = screen.offsetWidth;//图片宽度
+
+    for (var i = 0; i < ulLis.length; i++) {
+        var li = document.createElement("li");
+        li.innerHTML = i + 1;
+        ol.appendChild(li);
+    }
+    var olLis = ol.children;//所有按钮
+    olLis[0].className = "current";
+    var firstImg = ulLis[0].cloneNode(true);
+    ul.appendChild(firstImg);
+    for (var i = 0; i < olLis.length; i++) {
+        olLis[i].index = i;
+        olLis[i].onmouseover = function () {
+            for (var i = 0; i < olLis.length; i++) {
+                olLis[i].className = "";
+            }
+            this.className = "current";
+
+            var target = -this.index * imgWidth;
+            animate(ul, target);
+            pic = square = this.index;
+        };
+    }
+    swiperson1.onmouseover = function () {
+        clearInterval(timer);
+    };
+    swiperson1.onmouseout = function () {
+        timer = setInterval(playNext, 1000);
+    };
+    var square = 0;//用来记录当前亮起的按钮的索引
+    var pic = 0;//用来记录当前显示的图片的索引
+    function playNext() {
+        if (pic === ulLis.length - 1) {
+            ul.style.left = 0;//瞬间跳到开始
+            pic = 0;//索引也要归零
+        }
+        pic++;//计算出接下来要显示的图片的索引
+        var target = -pic * imgWidth;
+        animate(ul, target);
+
+        if (square < olLis.length - 1) {
+            square++;
+        } else {
+            square = 0;
+        }
+        for (var i = 0; i < olLis.length; i++) {
+            olLis[i].className = "";
+        }
+        olLis[square].className = "current";
+
+    }
+    timer = setInterval(playNext, 1000);
+    
+    //获取小图片
+    
+</script>
+
+
+<!--轮播图结束-->
+</body>
+</html>
